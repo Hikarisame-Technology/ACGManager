@@ -1,0 +1,17 @@
+﻿<Application x:Class="ACGManager.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:muxc="http://schemas.inkore.net/lib/ui/wpf/modern"
+             xmlns:local="clr-namespace:ACGManager"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <muxc:ThemeResources/>
+                <muxc:XamlControlsResources />
+            </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="SegoeIcons">/ACGManager;component/Resources/#Segoe Fluent Icons</FontFamily>
+            <!-- Other app resources here -->
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
