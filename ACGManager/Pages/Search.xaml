@@ -6,9 +6,9 @@
       xmlns:muxc="http://schemas.inkore.net/lib/ui/wpf/modern"
       xmlns:local="clr-namespace:ACGManager.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Search">
-
+      KeepAlive="True"
+      d:DesignHeight="620" d:DesignWidth="1040"
+      Margin="5" >
     <Grid>
         <muxc:NavigationView x:Name="Search_Nv"
                              PaneDisplayMode="Top"
@@ -26,4 +26,5 @@
             <ContentControl x:Name="Search_FrameContent"  HorizontalAlignment="stretch" VerticalAlignment="stretch" Margin="4" IsTabStop="False"/>
         </muxc:NavigationView>
     </Grid>
+
 </Page>

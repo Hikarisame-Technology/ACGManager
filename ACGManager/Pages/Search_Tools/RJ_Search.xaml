@@ -6,7 +6,8 @@
       xmlns:muxc="http://schemas.inkore.net/lib/ui/wpf/modern"
       xmlns:local="clr-namespace:ACGManager.Pages.Search_Tools"
       mc:Ignorable="d" 
-      d:DesignHeight="620" d:DesignWidth="1040"
+      KeepAlive="True"
+      d:DesignHeight="560" d:DesignWidth="1030"
       Title="RJ_Search">
     <Page.Resources>
         <SolidColorBrush x:Key="ListViewItem.MouseOver.Background" Color="#FF2A3F51" />
@@ -36,6 +37,7 @@
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
+
     </Page.Resources>
     <Grid>
 
@@ -50,12 +52,12 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="104,7,0,0">
             <TextBox x:Name="RJ_Text" Width="250"/>
-            <Button VerticalAlignment="Stretch" Height="32" Width="40" Margin="0,0,0,0" Click="RJ_Button_Click">
+            <Button VerticalAlignment="Stretch" Height="32" Width="40" Margin="0,0,0,0" Click="RJ_Button_Click" IsDefault="True">
                 <muxc:FontIcon FontFamily="{DynamicResource SegoeIcons}" Glyph="&#xE094;"/>
             </Button>
         </StackPanel>
 
-        <ListView x:Name="RJ_ListView"  Margin="10,45,10,10" ItemContainerStyle="{StaticResource NoHoverListViewItemStyle}" >
+        <ListView x:Name="RJ_ListView"  Margin="10,45,10,10" ItemContainerStyle="{StaticResource NoHoverListViewItemStyle}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="图片" Width="auto">
@@ -66,7 +68,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn Header="RJ" DisplayMemberBinding="{Binding Rj}" Width="auto"/>
-                    <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Title}" Width="auto"/>
+                    <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Title}" Width="300"/>
                     <GridViewColumn Header="Url" DisplayMemberBinding="{Binding Url}" Width="auto"/>
                 </GridView>
             </ListView.View>

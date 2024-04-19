@@ -92,7 +92,7 @@
 
             </muxc:NavigationView.FooterMenuItems>
 
-            <ContentControl x:Name="FrameContent"  HorizontalAlignment="stretch" VerticalAlignment="stretch" Margin="4" IsTabStop="False" Height="625"/>
+            <ContentControl x:Name="FrameContent" HorizontalAlignment="stretch" VerticalAlignment="stretch" Margin="4" IsTabStop="False"/>
 
         </muxc:NavigationView>
 

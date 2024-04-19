@@ -66,7 +66,8 @@ namespace ACGManager.Pages.Search_Tools
             }
             catch (Exception ex)
             {
-                MessageBox.Show("发送 POST 请求时出错: " + ex.Message);
+                rj_null.Title = "发送 POST 请求时出错:" + ex.Message;
+                rj_null.IsOpen = true;
             }
         }
 
