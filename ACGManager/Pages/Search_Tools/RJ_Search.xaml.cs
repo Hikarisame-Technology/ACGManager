@@ -70,13 +70,16 @@ namespace ACGManager.Pages.Search_Tools
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void RJ_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (RJ_Text.Text == null)
+            if (RJ_Text.Text == "")
             {
                 rj_null.IsOpen = true;
             }
-            Http_RJ_ListView(RJ_Text.Text);
+            else
+            { 
+                Http_RJ_ListView(RJ_Text.Text);
+            }
         }
     }
 }

@@ -8,13 +8,41 @@
       mc:Ignorable="d" 
       d:DesignHeight="620" d:DesignWidth="1040"
       Title="RJ_Search">
-
+    <Page.Resources>
+        <SolidColorBrush x:Key="ListViewItem.MouseOver.Background" Color="#FF2A3F51" />
+        <Style x:Key="NoHoverListViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <!-- 此处定义行的内容 -->
+                            <GridViewRowPresenter Content="{TemplateBinding Content}"
+                                              Columns="{TemplateBinding GridView.ColumnCollection}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- 鼠标悬停时修改背景色 -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource ListViewItem.MouseOver.Background}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!--<Setter Property="HorizontalContentAlignment" Value="Center"/>-->
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </Page.Resources>
     <Grid>
 
         <muxc:InfoBar x:Name="rj_null" IsOpen="False"
                       Severity="Error"
                       Title="不能为空" HorizontalAlignment="Center" VerticalAlignment="Top" Panel.ZIndex="1"/>
-        
+
 
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Foreground="White">
             <Run Language="zh-cn" Text="RJ号查询"/>
@@ -22,34 +50,24 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="104,7,0,0">
             <TextBox x:Name="RJ_Text" Width="250"/>
-            <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="32" Width="32" Margin="0,0,0,0" Click="Button_Click">
-                <Button.Template>
-                    <ControlTemplate>
-                        <muxc:FontIcon FontFamily="{DynamicResource SegoeIcons}" Glyph="&#xE094;"/>
-                    </ControlTemplate>
-                </Button.Template>
+            <Button VerticalAlignment="Stretch" Height="32" Width="40" Margin="0,0,0,0" Click="RJ_Button_Click">
+                <muxc:FontIcon FontFamily="{DynamicResource SegoeIcons}" Glyph="&#xE094;"/>
             </Button>
         </StackPanel>
 
-        <ListView x:Name="RJ_ListView"  Margin="10,45,10,10">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="Foreground" Value="White"/>
-                </Style>
-            </ListView.ItemContainerStyle>
+        <ListView x:Name="RJ_ListView"  Margin="10,45,10,10" ItemContainerStyle="{StaticResource NoHoverListViewItemStyle}" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="图片" Width="150">
+                    <GridViewColumn Header="图片" Width="auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Image Width="150" Height="150" Source="{Binding Img}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="RJ" DisplayMemberBinding="{Binding Rj}" Width="100"/>
-                    <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Title}" Width="200"/>
-                    <GridViewColumn Header="Url" DisplayMemberBinding="{Binding Url}" Width="470"/>
+                    <GridViewColumn Header="RJ" DisplayMemberBinding="{Binding Rj}" Width="auto"/>
+                    <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Title}" Width="auto"/>
+                    <GridViewColumn Header="Url" DisplayMemberBinding="{Binding Url}" Width="auto"/>
                 </GridView>
             </ListView.View>
         </ListView>
