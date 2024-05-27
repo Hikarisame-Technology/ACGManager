@@ -11,6 +11,7 @@
         muxc:WindowHelper.SystemBackdropType="Mica"
         muxc:TitleBar.IsBackButtonVisible="False"
         muxc:WindowHelper.UseModernWindowStyle="True"
+        muxc:WindowHelper.FixMaximizedWindow="False"
         Height="650" Width="1100" MinWidth="1100" MinHeight="650" 
         Loaded="Window_Loaded">
     <Grid>

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace ACGManager.Pages.Search_Tools
 {
@@ -20,10 +21,10 @@ namespace ACGManager.Pages.Search_Tools
 
         public class Item
         {
-            public string Img { get; set; }
-            public string Rj { get; set; }
-            public string Title { get; set; }
-            public string Url { get; set; }
+            public string img { get; set; }
+            public string rj { get; set; }
+            public string title { get; set; }
+            public string url { get; set; }
         }
 
         public async void Http_RJ_ListView(string keyword) 
@@ -55,8 +56,8 @@ namespace ACGManager.Pages.Search_Tools
                     // 将img字段转换为完整的HTTPS URL
                     foreach (var item in items)
                     {
-                        item.Img = "https:" + item.Img.Replace("\\/", "/");
-                        item.Url = "https:" + item.Url.Replace("\\/", "/"); ;
+                        item.img = "https:" + item.img.Replace("\\/", "/");
+                        item.url = item.url.Replace("\\/", "/"); ;
                     }
 
                     // 将数据绑定到ListView
@@ -82,5 +83,51 @@ namespace ACGManager.Pages.Search_Tools
                 Http_RJ_ListView(RJ_Text.Text);
             }
         }
+
+        private void Image_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var image = sender as Image;
+            if (image != null)
+            {
+                PopupImage.Source = image.Source;
+                ImagePopup.IsOpen = true;
+            }
+        }
+
+        private void Image_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ImagePopup.IsOpen = false;
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+            e.Handled = true;
+        }
+
+        private void CopyRJ_Click(object sender, RoutedEventArgs e)
+        {
+            if (RJ_ListView.SelectedItem is Item selectedItem)
+            {
+                TextCopy.ClipboardService.SetText(selectedItem.rj);
+            }
+        }
+
+        private void CopyTitle_Click(object sender, RoutedEventArgs e)
+        {
+            if (RJ_ListView.SelectedItem is Item selectedItem)
+            {
+                TextCopy.ClipboardService.SetText(selectedItem.title);
+            }
+        }
+
+        private void CopyUrl_Click(object sender, RoutedEventArgs e)
+        {
+            if (RJ_ListView.SelectedItem is Item selectedItem)
+            {
+                TextCopy.ClipboardService.SetText(selectedItem.url);
+            }
+        }
+
     }
 }
