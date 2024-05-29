@@ -9,8 +9,102 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Vndb_Search">
 
+    <Page.Resources>
+        <SolidColorBrush x:Key="ListViewItem.MouseOver.Background" Color="#FF2A3F51" />
+
+        <ContextMenu x:Key="ItemContextMenu">
+            <MenuItem Header="复制名称" Click="CopyTitle_Click"/>
+            <MenuItem Header="复制别名" Click="CopyAliases_Click"/>
+            <MenuItem Header="复制开发商" Click="CopyDeveloperse_Click"/>
+            <MenuItem Header="复制链接" Click="CopyUrl_Click"/>
+        </ContextMenu>
+
+        <Style x:Key="NoHoverListViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border x:Name="Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                            <!-- 此处定义行的内容 -->
+                            <GridViewRowPresenter Content="{TemplateBinding Content}"
+                                          Columns="{TemplateBinding GridView.ColumnCollection}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- 鼠标悬停时修改背景色 -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource ListViewItem.MouseOver.Background}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
+        </Style>
+
+        <Style x:Key="DelayedToolTipStyle" TargetType="Image">
+            <Setter Property="ToolTipService.InitialShowDelay" Value="100"/>
+        </Style>
+
+    </Page.Resources>
+
     <Grid>
-        <Label Content="Vndb" HorizontalAlignment="Left" Margin="83,67,0,0" VerticalAlignment="Top" Height="23" Width="25" FontSize="20" />
+
+        <muxc:InfoBar x:Name="vndb_null" IsOpen="False"
+                      HorizontalAlignment="Center" VerticalAlignment="Top" Panel.ZIndex="1"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Foreground="White">
+            <Run Language="zh-cn" Text="Vndb 查询"/>
+        </TextBlock>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,7,0,0">
+            <TextBox x:Name="Vndb_Text" Width="250"/>
+            <Button VerticalAlignment="Stretch" Height="32" Width="40" Margin="0,0,0,0" Click="Vndb_Button_Click" IsDefault="True">
+                <muxc:FontIcon FontFamily="{DynamicResource SegoeIcons}" Glyph="&#xE094;"/>
+            </Button>
+        </StackPanel>
+
+        <ListView x:Name="Vndb_ListView"  Margin="10,45,10,10" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" ItemContainerStyle="{StaticResource NoHoverListViewItemStyle}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="图片" Width="auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Width="150" Height="150" Source="{Binding image.url}"
+                                       Style="{DynamicResource DelayedToolTipStyle}">
+                                    <Image.ToolTip>
+                                        <ToolTip>
+                                            <Image Source="{Binding image.url}" Height="260"/>
+                                        </ToolTip>
+                                    </Image.ToolTip>
+                                </Image>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Title_Aliases}" Width="200"/>
+                    <!--<GridViewColumn Header="副名称" DisplayMemberBinding="{Binding aliases}" Width="300"/>-->
+                    <GridViewColumn Header="开发商" DisplayMemberBinding="{Binding developersnames}" Width="auto"/>
+                    <GridViewColumn Header="游戏语言" DisplayMemberBinding="{Binding languagessupported}" Width="auto"/>
+                    <GridViewColumn Header="预计时长" DisplayMemberBinding="{Binding displaylength_minutes}" Width="auto"/>
+                    <GridViewColumn Header="VNDB网站">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Hyperlink NavigateUri="{Binding formattedUrl}"
+                                               RequestNavigate="Hyperlink_RequestNavigate">
+                                        <TextBlock Text="打开Vndb页面" />
+                                    </Hyperlink>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </Grid>
 </Page>
