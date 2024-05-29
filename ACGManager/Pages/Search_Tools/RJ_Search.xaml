@@ -40,51 +40,59 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <!--<Setter Property="HorizontalContentAlignment" Value="Center"/>-->
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
         </Style>
+        
+        <Style x:Key="DelayedToolTipStyle" TargetType="Image">
+            <Setter Property="ToolTipService.InitialShowDelay" Value="100"/>
+        </Style>
 
     </Page.Resources>
-    
-    <Grid>
 
+    <Grid>
         <muxc:InfoBar x:Name="rj_null" IsOpen="False"
                       Severity="Error"
-                      Title="不能为空" HorizontalAlignment="Center" VerticalAlignment="Top" Panel.ZIndex="1"/>
+                      HorizontalAlignment="Center" VerticalAlignment="Top" Panel.ZIndex="1"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Foreground="White">
+        <TextBlock HorizontalAlignment="Left" Margin="20,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Foreground="White">
             <Run Language="zh-cn" Text="RJ号查询"/>
         </TextBlock>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="104,7,0,0">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,7,0,0">
             <TextBox x:Name="RJ_Text" Width="250"/>
             <Button VerticalAlignment="Stretch" Height="32" Width="40" Margin="0,0,0,0" Click="RJ_Button_Click" IsDefault="True">
                 <muxc:FontIcon FontFamily="{DynamicResource SegoeIcons}" Glyph="&#xE094;"/>
             </Button>
         </StackPanel>
 
-        <ListView x:Name="RJ_ListView"  Margin="10,45,10,10" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" ItemContainerStyle="{StaticResource NoHoverListViewItemStyle}">
+        <ListView x:Name="RJ_ListView"  Margin="10,45,10,10" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" ItemContainerStyle="{StaticResource NoHoverListViewItemStyle}" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="图片" Width="auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Width="150" Height="150" Source="{Binding img}"
-                                       MouseEnter="Image_MouseEnter"
-                                       MouseLeave="Image_MouseLeave" />
+                                <Image Width="150" Height="150" Source="{Binding FormattedImg}"
+                                       Style="{DynamicResource DelayedToolTipStyle}">
+                                    <Image.ToolTip>
+                                        <ToolTip>
+                                            <Image Source="{Binding FormattedImg}"/>
+                                        </ToolTip>
+                                    </Image.ToolTip>
+                                </Image>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn Header="RJ" DisplayMemberBinding="{Binding rj}" Width="auto"/>
                     <GridViewColumn Header="名称" DisplayMemberBinding="{Binding title}" Width="300"/>
-                    <GridViewColumn Header="URL">
+                    <GridViewColumn Header="DLsite">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock>
-                                    <Hyperlink NavigateUri="{Binding url}" RequestNavigate="Hyperlink_RequestNavigate">
-                                        <TextBlock Text="{Binding url}" />
+                                    <Hyperlink NavigateUri="{Binding FormattedUrl}"
+                                               RequestNavigate="Hyperlink_RequestNavigate">
+                                        <TextBlock Text="打开DLsite网页" />
                                     </Hyperlink>
                                 </TextBlock>
                             </DataTemplate>
@@ -93,13 +101,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        
-        <Popup x:Name="ImagePopup" Placement="Mouse" AllowsTransparency="True"
-               PopupAnimation="Fade" StaysOpen="False">
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Image x:Name="PopupImage"/>
-            </Border>
-        </Popup>
-        
+
     </Grid>
 </Page>
