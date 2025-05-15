@@ -1,8 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using iNKORE.UI.WPF.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -21,34 +24,29 @@ namespace ACGManager.Pages.Search_Tools
 
         public class Item
         {
-            public string img { get; set; }
-            public string rj { get; set; }
-            public string title { get; set; }
-            public string url { get; set; }
+            public string Title { get; set; }
+            public string Link { get; set; }
+            public string Image { get; set; }
+            public string Maker { get; set; }
+            public string Maker_Url { get; set; }
 
-            public string FormattedImg => img != null ? $"https:{img.Replace("\\/", "/")}" : null;
-            public string FormattedUrl => url?.Replace("\\/", "/");
         }
-
         public async void Http_RJ_ListView(string keyword)
         {
             try
             {
-                string url = "https://rj.acgget.com/api.php"; // 替换成你的 API 地址
-                // 准备要发送的表单数据
-                var formData = new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string, string>("keyword", keyword),
-                });
+                string url = "https://api.hksts.eu.org/dlsite"; // 替换成你的 API 地址
                 using (HttpClient client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromSeconds(5);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    string jsonData = "{\"search\":\"maniax\", \"query\":\"ASMR\", \"results\":\"100\"}";
                     // 发送 POST 请求
-                    HttpResponseMessage response = await client.PostAsync(url, formData);
-
+                    HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync(url, content);
                     // 确保响应成功
                     response.EnsureSuccessStatusCode();
-
+                    
                     // 读取响应内容
                     string responseBody = await response.Content.ReadAsStringAsync();
                     // 解析 JSON
@@ -160,7 +158,7 @@ namespace ACGManager.Pages.Search_Tools
         {
             if (RJ_ListView.SelectedItem is Item selectedItem)
             {
-                TextCopy.ClipboardService.SetText(selectedItem.rj);
+                TextCopy.ClipboardService.SetText(selectedItem.Maker);
             }
         }
 
@@ -168,7 +166,7 @@ namespace ACGManager.Pages.Search_Tools
         {
             if (RJ_ListView.SelectedItem is Item selectedItem)
             {
-                TextCopy.ClipboardService.SetText(selectedItem.title);
+                TextCopy.ClipboardService.SetText(selectedItem.Title);
             }
         }
 
@@ -176,9 +174,18 @@ namespace ACGManager.Pages.Search_Tools
         {
             if (RJ_ListView.SelectedItem is Item selectedItem)
             {
-                TextCopy.ClipboardService.SetText(selectedItem.url);
+                TextCopy.ClipboardService.SetText(selectedItem.Link);
             }
         }
 
+        private void searchComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void resultsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
