@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:muxc="http://schemas.inkore.net/lib/ui/wpf/modern"
-      xmlns:local="clr-namespace:ACGManager.Pages.Search_Tools" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       KeepAlive="True"
       d:DesignHeight="560" d:DesignWidth="1030"
@@ -12,11 +12,10 @@
     <Page.Resources>
         <SolidColorBrush x:Key="ListViewItem.MouseOver.Background" Color="#FF2A3F51" />
         <ContextMenu x:Key="ItemContextMenu">
-            <MenuItem Header="复制RJ号" Click="CopyRJ_Click"/>
             <MenuItem Header="复制名称" Click="CopyTitle_Click"/>
             <MenuItem Header="复制链接" Click="CopyUrl_Click"/>
         </ContextMenu>
-        
+
         <Style x:Key="NoHoverListViewItemStyle" TargetType="ListViewItem">
             <Setter Property="Template">
                 <Setter.Value>
@@ -43,13 +42,11 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
         </Style>
-        
+
         <Style x:Key="DelayedToolTipStyle" TargetType="Image">
             <Setter Property="ToolTipService.InitialShowDelay" Value="100"/>
         </Style>
-
     </Page.Resources>
-
     <Grid>
         <muxc:InfoBar x:Name="rj_null" IsOpen="False"
                       Severity="Error"
@@ -60,25 +57,22 @@
         </TextBlock>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="130,7,0,0">
-            <ComboBox x:Name="search"
+            <ComboBox x:Name="DL_search"
                       Width="100"
-                      SelectionChanged="searchComboBox_SelectionChanged" SelectedIndex="0">
-                <sys:String>同人</sys:String>
-                <sys:String>漫画</sys:String>
-                <sys:String>游戏</sys:String>
-                <sys:String>软件</sys:String>
+                      ItemsSource="{Binding SearchTypes}"
+                      SelectedItem="{Binding SelectedSearchType}"
+                      DisplayMemberPath="DisplayText"
+                      SelectionChanged="searchComboBox_SelectionChanged">
             </ComboBox>
-            <ComboBox IsEditable="True"
-                      x:Name="results"
+            <ComboBox x:Name="DL_results"
                       Width="100"
                       SelectionChanged="resultsComboBox_SelectionChanged" Margin="5,0,0,0" SelectedIndex="0">
-                <sys:String>10</sys:String>
                 <sys:String>30</sys:String>
                 <sys:String>50</sys:String>
                 <sys:String>100</sys:String>
             </ComboBox>
 
-            <TextBox x:Name="RJ_Text" Width="250" Margin="5,0,0,0"/>
+            <TextBox x:Name="DL_query_Text" Width="250" Margin="5,0,0,0"/>
             <Button VerticalAlignment="Stretch" Height="32" Width="40" Margin="0,0,0,0" Click="RJ_Button_Click" IsDefault="True">
                 <muxc:FontIcon FontFamily="{DynamicResource SegoeIcons}" Glyph="&#xE094;"/>
             </Button>
@@ -101,7 +95,14 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Title}" Width="300"/>
+                    <GridViewColumn Header="名称"  Width="300">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Title}"
+                                           TextWrapping="Wrap"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="会社" DisplayMemberBinding="{Binding Maker}" Width="auto"/>
                     <GridViewColumn Header="DLsite">
                         <GridViewColumn.CellTemplate>

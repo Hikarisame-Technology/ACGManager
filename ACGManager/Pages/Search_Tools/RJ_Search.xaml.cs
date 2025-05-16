@@ -1,10 +1,11 @@
-﻿using iNKORE.UI.WPF.Helpers;
+﻿using ACGManager.Pages.Search_Tools.ViewModels;
+using ACGManager.Pages.Search_Tools.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,9 +18,15 @@ namespace ACGManager.Pages.Search_Tools
     /// </summary>
     public partial class RJ_Search : Page
     {
+        private SearchViewModel _viewModel;
+        
         public RJ_Search()
         {
             InitializeComponent();
+            
+            // 初始化ViewModel并设置为DataContext
+            _viewModel = new SearchViewModel();
+            this.DataContext = _viewModel;
         }
 
         public class Item
@@ -29,9 +36,30 @@ namespace ACGManager.Pages.Search_Tools
             public string Image { get; set; }
             public string Maker { get; set; }
             public string Maker_Url { get; set; }
-
+            
+            // 添加FormattedUrl属性，将Link转换为Uri对象
+            public Uri FormattedUrl
+            {
+                get
+                {
+                    if (string.IsNullOrEmpty(Link))
+                        return null;
+                    
+                    return new Uri(Link);
+                }
+            }
+            
+            // 添加FormattedImg属性，用于ToolTip中的图片显示
+            public string FormattedImg
+            {
+                get
+                {
+                    return Image;
+                }
+            }
         }
-        public async void Http_RJ_ListView(string keyword)
+
+        public async void Http_RJ_ListView(string search,string query, string results)
         {
             try
             {
@@ -39,10 +67,15 @@ namespace ACGManager.Pages.Search_Tools
                 using (HttpClient client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromSeconds(5);
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    string jsonData = "{\"search\":\"maniax\", \"query\":\"ASMR\", \"results\":\"100\"}";
+
+                    string jsonData = @"{'search':'', 'query':'', 'results':''}";
+                    JObject jsonObject = JObject.Parse(jsonData);
+                    jsonObject["search"] = search;
+                    jsonObject["query"] = query;
+                    jsonObject["results"] = results;
+                    string modify_jsonData = jsonObject.ToString();
                     // 发送 POST 请求
-                    HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                    HttpContent content = new StringContent(modify_jsonData, Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync(url, content);
                     // 确保响应成功
                     response.EnsureSuccessStatusCode();
@@ -69,13 +102,15 @@ namespace ACGManager.Pages.Search_Tools
 
         private void RJ_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (RJ_Text.Text == "")
+            if (DL_query_Text.Text == "")
             {
                 ShowInfoBar("搜索框不能为空 ", 0, 3);
             }
             else
             {
-                Http_RJ_ListView(RJ_Text.Text);
+                // 获取选中项的英文Value属性值
+                string searchTypeValue = _viewModel.SelectedSearchType.Value;
+                Http_RJ_ListView(searchTypeValue, DL_query_Text.Text, DL_results.Text);
             }
         }
 
@@ -154,14 +189,6 @@ namespace ACGManager.Pages.Search_Tools
             e.Handled = true;
         }
 
-        private void CopyRJ_Click(object sender, RoutedEventArgs e)
-        {
-            if (RJ_ListView.SelectedItem is Item selectedItem)
-            {
-                TextCopy.ClipboardService.SetText(selectedItem.Maker);
-            }
-        }
-
         private void CopyTitle_Click(object sender, RoutedEventArgs e)
         {
             if (RJ_ListView.SelectedItem is Item selectedItem)
@@ -180,7 +207,7 @@ namespace ACGManager.Pages.Search_Tools
 
         private void searchComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            // 可以在这里添加额外的处理逻辑
         }
 
         private void resultsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

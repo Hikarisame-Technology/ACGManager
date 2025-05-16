@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACGManager", "ACGManager.csproj", "{BDA656AF-C9C9-008D-5AA5-A3B76E95E101}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BDA656AF-C9C9-008D-5AA5-A3B76E95E101}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDA656AF-C9C9-008D-5AA5-A3B76E95E101}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDA656AF-C9C9-008D-5AA5-A3B76E95E101}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDA656AF-C9C9-008D-5AA5-A3B76E95E101}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {08B0634B-94A6-4097-B749-E777A7DDC8B8}
+	EndGlobalSection
+EndGlobal
